@@ -27,8 +27,8 @@
             </select>
         </form>
         <form class="d-flex">
-            <button class="btn btn-outline-primary btn-lg" type="submit"><a href="${pageContext.request.contextPath}/registration"><fmt:message key="signIn" bundle="${lang}"/></a></button>
             <button class="btn btn-outline-primary btn-lg" type="submit"><a href="${pageContext.request.contextPath}/login"><fmt:message key="logIn" bundle="${lang}"/></a></button>
+            <button class="btn btn-outline-primary btn-lg" type="submit"><a href="${pageContext.request.contextPath}/registration"><fmt:message key="signIn" bundle="${lang}"/></a></button>
         </form>
     </div>
 </nav>

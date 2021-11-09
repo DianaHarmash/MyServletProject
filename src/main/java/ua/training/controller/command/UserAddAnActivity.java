@@ -1,5 +1,6 @@
 package ua.training.controller.command;
 
+import ua.training.config.ValidationClass;
 import ua.training.model.entity.Activities;
 import ua.training.model.entity.Users;
 import ua.training.service.ActivityService;
@@ -26,7 +27,12 @@ public class UserAddAnActivity implements Command {
             request.getSession().setAttribute("activity", activity);
             return "/users/addAnActivity.jsp";
         }
-        requestService.addRequest(Integer.parseInt(String.valueOf(request.getSession().getAttribute("idOfUser"))), id, hours, String.valueOf(Types.ADD));
-        return "redirect:/user/listOfActivity";
+        if (ValidationClass.checkInputHours(hours)) {
+            requestService.addRequest(Integer.parseInt(String.valueOf(request.getSession().getAttribute("idOfUser"))), id, hours, String.valueOf(Types.ADD));
+            return "redirect:/user/listOfActivity";
+        } else {
+            request.getSession().setAttribute("exception", "Illegal format of period string");
+            return "redirect:/user/listOfActivity/addAnActivity";
+        }
     }
 }

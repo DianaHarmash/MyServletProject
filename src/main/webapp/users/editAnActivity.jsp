@@ -39,7 +39,7 @@
                                 <div class = "d-flex flex-row align-items-center mb-4">
                                     <i class = "fas fa-lock fa-lg me-3 fa-fw"> </i>
                                     <div class = "form-outline flex-fill mb-0">
-                                        <input type="text" value="<c:out value="${requestScope.hours}"/>" id = "form3Example4c" name="hours" class = "form-control" />
+                                        <input type="text" value="<c:out value="${requestScope.hours}"/>" id = "form3Example4c" name="hours_" class = "form-control" />
                                         <label class = "form-label" for = "form3Example4c"><fmt:message key="inputHoursYouWantToDoThisActivity" bundle="${lang}"/></label>
                                     </div>
                                 </div>

@@ -33,10 +33,11 @@
                                         <label class = "form-label" for = "form3Example3c"><fmt:message key="name" bundle="${lang}"/></label>
                                     </div>
                                 </div>
+                                <label class = "form-label" ><c:out value="${requestScope.exception}"/></label>
                                 <div class = "d-flex flex-row align-items-center mb-4">
                                     <i class = "fas fa-lock fa-lg me-3 fa-fw"> </i>
                                     <div class = "form-outline flex-fill mb-0">
-                                        <input type = "password" id = "form3Example4c" name="category" class = "form-control" />
+                                        <input type = "text" id = "form3Example4c" name="category" class = "form-control" />
                                         <label class = "form-label" for = "form3Example4c"><fmt:message key="category" bundle="${lang}"/></label>
                                     </div>
                                 </div>

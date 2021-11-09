@@ -35,6 +35,6 @@ private UserActivityService userActivity = new UserActivityService();
         request.setAttribute("user", userService.findUserByLogin((String) request.getSession().getAttribute("UserName")).get());
         request.setAttribute("activities", activityService.getRecordsSortedByName(offset,limit));
         request.setAttribute("users", userActivity.getAllUsersOfActivity());
-        return "/admins/listOfActivities.jsp";
+        return "/admins/listOfActivitiesByName.jsp";
     }
 }

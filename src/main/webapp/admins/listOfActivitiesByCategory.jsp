@@ -89,9 +89,9 @@
 <nav class="navbar navbar-expand-lg">
 <div class="container-fluid">
     <form class="d-flex">
-    <button class="btn btn-outline-primary"><a href="/admin/listOfActivity?page=prev"><-</a></button>
+    <button class="btn btn-outline-primary"><a href="/admin/listOfActivity/sortByCategory?page=prev"><-</a></button>
     </form>
-    <button class="btn btn-outline-primary"><a href="/admin/listOfActivity?page=next">-></a></button>
+    <button class="btn btn-outline-primary"><a href="/admin/listOfActivity/sortByCategory?page=next">-></a></button>
     <!--form class="d-flex"-->
     <!--/form-->
 </div>

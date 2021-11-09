@@ -122,9 +122,15 @@ public class JDBCRequestsDao implements RequestsDao {
                 preparedStatement.setInt(2, id_activity);
                 preparedStatement.setString(3, type);
                 preparedStatement.executeUpdate();
+                connection.commit();
             }
         } catch (SQLException exception) {
             exception.printStackTrace();
+            try{
+                connection.rollback();
+            } catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 
