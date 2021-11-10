@@ -1,6 +1,7 @@
 package ua.training.service;
 
 import ua.training.model.dao.DaoFactory;
+import ua.training.model.dao.impl.JDBCActivityDao;
 import ua.training.model.dao.mapper.ActivitiesMapper;
 import ua.training.model.entity.Activities;
 
@@ -9,8 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import java.util.NoSuchElementException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ActivityService {
+    private static final Logger logger = Logger.getLogger(String.valueOf(ActivityService.class));
 
     private DaoFactory daoFactory = DaoFactory.getInstance();
 
@@ -34,7 +38,7 @@ public class ActivityService {
                 activities.add(new ActivitiesMapper().extractFromResultSet(set));
             }
         }catch (Exception e){
-            e.printStackTrace();
+            logger.log(Level.WARNING, e.getLocalizedMessage());
         }
         return activities;
     }

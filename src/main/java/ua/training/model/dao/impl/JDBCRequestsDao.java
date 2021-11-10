@@ -18,10 +18,15 @@ import java.util.Optional;
 import ua.training.model.entity.UserRequest;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import ua.training.service.UserService;
 import ua.training.service.ActivityService;
 
 public class JDBCRequestsDao implements RequestsDao {
+    private static final Logger logger = Logger.getLogger(String.valueOf(JDBCRequestsDao.class));
+
     static {
         new JDBCDaoFactory().executeUpdate(SQLCommands.SQL_CREATE_REQUEST);
     }
@@ -45,7 +50,7 @@ public class JDBCRequestsDao implements RequestsDao {
                 result = Optional.of(new RequestMapper().extractFromResultSet(set));
             }
         }catch (Exception ex){
-            ex.printStackTrace();
+            logger.log(Level.WARNING, ex.getLocalizedMessage());
         }
         return result;
     }
@@ -56,7 +61,7 @@ public class JDBCRequestsDao implements RequestsDao {
             ps.setInt( 1, id);
             ps.executeUpdate();
         }catch (Exception ex){
-            ex.printStackTrace();
+            logger.log(Level.WARNING, ex.getLocalizedMessage());
         }
     }
 
@@ -75,10 +80,11 @@ public class JDBCRequestsDao implements RequestsDao {
             deleteRequestById(id);
             connection.commit();
         } catch (Exception ex) {
+            logger.log(Level.WARNING, ex.getLocalizedMessage());
             try {
                 connection.rollback();
             } catch(Exception exception) {
-                exception.printStackTrace();
+                logger.log(Level.WARNING, exception.getLocalizedMessage());
             }
         }
     }
@@ -93,7 +99,7 @@ public class JDBCRequestsDao implements RequestsDao {
                 requests.add(new UserRequest(resultSet.getInt(SQLColumns.ID_OF_REQUEST.toString()), userService.findUserById(resultSet.getInt(SQLColumns.ID_USER.toString())).getLogin(), activityService.findActivity(resultSet.getInt(SQLColumns.ID_ACTIVITY.toString())).getActivity(), resultSet.getString(SQLColumns.TYPE.toString())));
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.log(Level.WARNING, ex.getLocalizedMessage());
         }
         return requests;
     }
@@ -107,7 +113,7 @@ public class JDBCRequestsDao implements RequestsDao {
             result.next();
             return result.getInt(1);
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            logger.log(Level.WARNING, ex.getLocalizedMessage());
         }
         return -1;
     }
@@ -125,11 +131,11 @@ public class JDBCRequestsDao implements RequestsDao {
                 connection.commit();
             }
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            logger.log(Level.WARNING, exception.getLocalizedMessage());
             try{
                 connection.rollback();
             } catch (Exception e){
-                e.printStackTrace();
+                logger.log(Level.WARNING, e.getLocalizedMessage());
             }
         }
     }
@@ -146,8 +152,14 @@ public class JDBCRequestsDao implements RequestsDao {
                 preparedStatement.setString(4, type);
                 preparedStatement.executeUpdate();
             }
+            connection.commit();
         } catch(SQLException ex) {
-            ex.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (Exception e) {
+                logger.log(Level.WARNING, e.getLocalizedMessage());
+            }
+            logger.log(Level.WARNING, ex.getLocalizedMessage());
         }
     }
 }

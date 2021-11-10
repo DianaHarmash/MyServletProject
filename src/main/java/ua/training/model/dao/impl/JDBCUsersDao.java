@@ -8,9 +8,14 @@ import ua.training.service.SQLColumns;
 
 import java.sql.*;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import ua.training.service.SQLCommands;
 
 public class JDBCUsersDao implements UserDao {
+    private static final Logger logger = Logger.getLogger(String.valueOf(JDBCUsersDao.class));
+
     static {
         new JDBCDaoFactory().executeUpdate(SQLCommands.SQL_CREATE_USER);
     }
@@ -31,7 +36,7 @@ public class JDBCUsersDao implements UserDao {
                 result = Optional.of(new UserMapper().extractFromResultSet(set));
             }
         }catch (Exception ex){
-            ex.printStackTrace();
+            logger.log(Level.WARNING, ex.getLocalizedMessage());
         }
         return result;
     }
@@ -47,7 +52,7 @@ public class JDBCUsersDao implements UserDao {
                 optionalUser = Optional.of(new UserMapper().extractFromResultSet(resultSet));
             }
         } catch (Exception exception) {
-            exception.printStackTrace();
+            logger.log(Level.WARNING, exception.getLocalizedMessage());
         }
         return optionalUser;
     }
@@ -63,7 +68,7 @@ public class JDBCUsersDao implements UserDao {
             ps.setString( 1, login);
             ps.executeUpdate();
         }catch (Exception ex){
-            ex.printStackTrace();
+            logger.log(Level.WARNING, ex.getLocalizedMessage());
         }
     }
 
@@ -81,11 +86,11 @@ public class JDBCUsersDao implements UserDao {
             result.next();
             return result.getString(1);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            logger.log(Level.WARNING, exception.getLocalizedMessage());
             try {
                 connection.rollback();
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.log(Level.WARNING, e.getLocalizedMessage());
             }
         }
             return "UNKNOWN";

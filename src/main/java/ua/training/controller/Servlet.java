@@ -8,9 +8,12 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class Servlet extends HttpServlet {
     private Map<String, Command> commands = new HashMap<>();
+
+    public static final Logger logger = Logger.getLogger(String.valueOf(Servlet.class));
 
     public void init(){
         commands.put("/logout", new LogOut());

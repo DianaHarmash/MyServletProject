@@ -15,8 +15,12 @@ import ua.training.model.dao.mapper.UserActivityMapper;
 import ua.training.model.entity.UserActivity;
 import ua.training.model.entity.ActivityUsers;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class JDBCUserActivityDao implements UserActivityDao {
+    private static final Logger logger = Logger.getLogger(String.valueOf(JDBCUserActivityDao.class));
+
     static {
         new JDBCDaoFactory().executeUpdate(SQLCommands.SQL_CREATE_USER_ACTIVITIES);
     }
@@ -38,7 +42,7 @@ public class JDBCUserActivityDao implements UserActivityDao {
                 result = Optional.of(new UserActivityMapper().extractFromResultSet(set));
             }
         }catch (Exception ex){
-            ex.printStackTrace();
+            logger.log(Level.WARNING, ex.getLocalizedMessage());
         }
         return result;
     }
@@ -50,7 +54,7 @@ public class JDBCUserActivityDao implements UserActivityDao {
             ps.setInt(2, id_activity);
             ps.executeUpdate();
         }catch (Exception ex){
-            ex.printStackTrace();
+            logger.log(Level.WARNING, ex.getLocalizedMessage());
         }
     }
 
@@ -61,7 +65,7 @@ public class JDBCUserActivityDao implements UserActivityDao {
             preparedStatement.setString(2, name);
             preparedStatement.executeUpdate();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.log(Level.WARNING, ex.getLocalizedMessage());
         }
     }
 
@@ -74,8 +78,9 @@ public class JDBCUserActivityDao implements UserActivityDao {
             result = ps.executeQuery();
             return result;
         }catch (Exception ex){
-            throw new RuntimeException(ex);
+            logger.log(Level.WARNING, ex.getLocalizedMessage());
         }
+        return null;
     }
 
     @Override
@@ -100,18 +105,18 @@ public class JDBCUserActivityDao implements UserActivityDao {
                 try {
                     connection.rollback();
                 } catch(Exception exception) {
-                    exception.printStackTrace();
+                    logger.log(Level.WARNING, exception.getLocalizedMessage());
                 }
-                ex.printStackTrace();
+                logger.log(Level.WARNING, ex.getLocalizedMessage());
             }
             connection.commit();
         } catch(Exception ex) {
             try {
                 connection.rollback();
             } catch(Exception exception) {
-                exception.printStackTrace();
+                logger.log(Level.WARNING, exception.getLocalizedMessage());
             }
-            ex.printStackTrace();
+            logger.log(Level.WARNING, ex.getLocalizedMessage());
         }
         return usersOfActivities;
     }
@@ -124,7 +129,7 @@ public class JDBCUserActivityDao implements UserActivityDao {
             preparedStatement.setInt(1, id);
             result = preparedStatement.executeQuery();
         } catch(Exception ex) {
-            ex.printStackTrace();
+            logger.log(Level.WARNING, ex.getLocalizedMessage());
         }
         return result;
     }
@@ -137,7 +142,7 @@ public class JDBCUserActivityDao implements UserActivityDao {
             preparedStatement.setString(1, name);
             result = preparedStatement.executeQuery();
         } catch(Exception ex) {
-            ex.printStackTrace();
+            logger.log(Level.WARNING, ex.getLocalizedMessage());
         }
         return result;
     }
@@ -150,7 +155,7 @@ public class JDBCUserActivityDao implements UserActivityDao {
             preparedStatement.setInt(3, id_activity);
             preparedStatement.executeUpdate();
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            logger.log(Level.WARNING, exception.getLocalizedMessage());
         }
     }
 
@@ -163,7 +168,7 @@ public class JDBCUserActivityDao implements UserActivityDao {
             preparedStatement.setString(3, hours);
             preparedStatement.executeUpdate();
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            logger.log(Level.WARNING, exception.getLocalizedMessage());
         }
     }
 }

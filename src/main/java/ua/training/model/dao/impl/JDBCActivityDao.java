@@ -1,5 +1,7 @@
 package ua.training.model.dao.impl;
 
+import com.sun.tools.sjavac.Log;
+import ua.training.controller.Servlet;
 import ua.training.model.dao.ActivityDao;
 import ua.training.model.dao.mapper.ActivitiesMapper;
 import ua.training.model.entity.Activities;
@@ -15,7 +17,11 @@ import java.sql.SQLException;
 import java.util.Optional;
 import ua.training.service.UserActivityService;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class JDBCActivityDao implements ActivityDao {
+    private static final Logger logger = Logger.getLogger(String.valueOf(JDBCActivityDao.class));
     static {
         new JDBCDaoFactory().executeUpdate(SQLCommands.SQL_CREATE_ACTIVITY);
     }
@@ -39,7 +45,7 @@ public class JDBCActivityDao implements ActivityDao {
                 result = Optional.of(new ActivitiesMapper().extractFromResultSet(set));
             }
         }catch (Exception ex){
-            throw new RuntimeException(ex);
+            logger.log(Level.WARNING, ex.getLocalizedMessage());
         }
         return result;
     }
@@ -54,7 +60,7 @@ public class JDBCActivityDao implements ActivityDao {
                 list.add(new ActivitiesMapper().extractFromResultSet(result));
             }
         }catch(Exception ex) {
-            ex.printStackTrace();
+            logger.log(Level.WARNING, "Exception:", ex);
         }
             return list;
     }
@@ -71,7 +77,7 @@ public class JDBCActivityDao implements ActivityDao {
                 list.add(new ActivitiesMapper().extractFromResultSet(result));
             }
         } catch(Exception ex) {
-            ex.printStackTrace();
+            logger.log(Level.WARNING, ex.getLocalizedMessage());
         }
         return list;
     }
@@ -88,7 +94,7 @@ public class JDBCActivityDao implements ActivityDao {
                 list.add(new ActivitiesMapper().extractFromResultSet(result));
             }
         } catch(Exception ex) {
-            ex.printStackTrace();
+            logger.log(Level.WARNING, ex.getLocalizedMessage());
         }
         return list;
     }
@@ -104,7 +110,7 @@ public class JDBCActivityDao implements ActivityDao {
                 result = Optional.of(new ActivitiesMapper().extractFromResultSet(set));
             }
         }catch (Exception ex){
-            throw new RuntimeException(ex);
+            logger.log(Level.WARNING, ex.getLocalizedMessage());
         }
         return result;
     }
@@ -122,7 +128,7 @@ public class JDBCActivityDao implements ActivityDao {
             ps.setInt(3, id);
             ps.executeUpdate();
         } catch (Exception ex){
-            throw new RuntimeException(ex);
+            logger.log(Level.WARNING, ex.getLocalizedMessage());
         }
     }
 
@@ -133,7 +139,7 @@ public class JDBCActivityDao implements ActivityDao {
             preparedStatement.setString(2, category);
             preparedStatement.executeUpdate();
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            logger.log(Level.WARNING, exception.getLocalizedMessage());
         }
     }
 
@@ -149,7 +155,7 @@ public class JDBCActivityDao implements ActivityDao {
             preparedStatement.setString(1, name);
             preparedStatement.executeUpdate();
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            logger.log(Level.WARNING, exception.getLocalizedMessage());
         }
     }
 

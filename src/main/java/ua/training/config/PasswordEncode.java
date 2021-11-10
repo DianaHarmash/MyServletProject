@@ -1,14 +1,19 @@
 package ua.training.config;
 
+import ua.training.model.dao.impl.JDBCActivityDao;
+
 import java.security.MessageDigest;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PasswordEncode {
+    private static final Logger logger = Logger.getLogger(String.valueOf(PasswordEncode.class));
+
     public String encode(String text) {
         try {
             return getEncode(text);
         } catch (Exception ex) {
-            // LOGGER
+            logger.log(Level.WARNING, ex.getLocalizedMessage());
         }
         return null;
     }

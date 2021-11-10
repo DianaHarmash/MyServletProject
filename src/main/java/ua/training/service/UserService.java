@@ -4,10 +4,15 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import ua.training.model.dao.DaoFactory;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import ua.training.model.dao.impl.JDBCActivityDao;
 import ua.training.model.entity.Users;
 import ua.training.model.entity.Activities;
 
 public class UserService {
+    private static final Logger logger = Logger.getLogger(String.valueOf(UserService.class));
 
     DaoFactory daoFactory = DaoFactory.getInstance();
 
@@ -27,7 +32,7 @@ public class UserService {
         try {
             return daoFactory.createUserDao().findUserById(id).orElseThrow(NoSuchElementException::new);
         } catch(NoSuchElementException exception) {
-            exception.printStackTrace();
+            logger.log(Level.WARNING, exception.getLocalizedMessage());
         }
         return null;
     }

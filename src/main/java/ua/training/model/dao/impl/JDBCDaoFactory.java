@@ -14,8 +14,11 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class JDBCDaoFactory extends DaoFactory {
+    private static final Logger logger = Logger.getLogger(String.valueOf(JDBCDaoFactory.class));
 
     private DataSource dataSource = ConnectionPoolHolder.getDataSource();
 
@@ -40,8 +43,9 @@ public class JDBCDaoFactory extends DaoFactory {
         try {
             return dataSource.getConnection();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            logger.log(Level.WARNING, e.getLocalizedMessage());
         }
+        return null;
     }
 
     public void executeUpdate(String SQLCommand) {
@@ -49,7 +53,7 @@ public class JDBCDaoFactory extends DaoFactory {
              Statement statement = Objects.requireNonNull(connection).createStatement()) {
              statement.executeUpdate(SQLCommand);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, e.getLocalizedMessage());
         }
     }
 
@@ -59,12 +63,12 @@ public class JDBCDaoFactory extends DaoFactory {
             result.next();
             return result.getInt(1);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            logger.log(Level.WARNING, e.getLocalizedMessage());
         } finally {
             try {
                 result.close();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                logger.log(Level.WARNING, throwables.getLocalizedMessage());
             }
         }
         return -1;
@@ -77,7 +81,7 @@ public class JDBCDaoFactory extends DaoFactory {
             set = statement.executeQuery(SQLCommand);
             return set;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            logger.log(Level.WARNING, e.getLocalizedMessage());
         }
         return null;
     }
